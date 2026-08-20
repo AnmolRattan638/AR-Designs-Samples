@@ -1,0 +1,485 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Himalayan Treat Kufri</title>
+<style>
+  /* ===== Reset & Base ===== */
+  .cafe * { box-sizing: border-box; margin: 0; padding: 0; }
+  .cafe {
+    --brown: #3e2723;
+    --brown-2: #5d4037;
+    --cream: #f5ecd9;
+    --cream-2: #fdf8ec;
+    --amber: #d4a056;
+    --amber-2: #b8862f;
+    --whatsapp: #25d366;
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    color: var(--brown);
+    background: var(--cream);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .cafe img { max-width: 100%; display: block; }
+  .cafe a { color: inherit; text-decoration: none; }
+  html { scroll-behavior: smooth; }
+  .cafe h1, .cafe h2, .cafe h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+  .cafe section { padding: 96px 24px; max-width: 1200px; margin: 0 auto; }
+  .cafe .section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    text-align: center;
+    margin-bottom: 12px;
+    color: var(--brown);
+  }
+  .cafe .section-sub {
+    text-align: center;
+    color: var(--brown-2);
+    margin-bottom: 56px;
+    font-size: 1.05rem;
+  }
+
+  /* ===== Reveal animation ===== */
+  .cafe .reveal { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s ease; }
+  .cafe .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ===== Navigation ===== */
+  .cafe .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(62, 39, 35, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--cream);
+    padding: 16px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .cafe .logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--amber); font-weight: 700; }
+  .cafe .nav-links { display: flex; gap: 32px; list-style: none; }
+  .cafe .nav-links a { font-size: .95rem; transition: color .2s; position: relative; }
+  .cafe .nav-links a::after {
+    content: ''; position: absolute; left: 0; bottom: -4px; width: 0; height: 2px;
+    background: var(--amber); transition: width .3s;
+  }
+  .cafe .nav-links a:hover { color: var(--amber); }
+  .cafe .nav-links a:hover::after { width: 100%; }
+  .cafe .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 8px; }
+  .cafe .hamburger span { width: 26px; height: 3px; background: var(--cream); border-radius: 2px; transition: .3s; }
+  .cafe .hamburger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+  .cafe .hamburger.active span:nth-child(2) { opacity: 0; }
+  .cafe .hamburger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+  @media (max-width: 768px) {
+    .cafe .hamburger { display: flex; }
+    .cafe .nav-links {
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: rgba(62, 39, 35, 0.98);
+      flex-direction: column; gap: 0;
+      max-height: 0; overflow: hidden; transition: max-height .4s ease;
+    }
+    .cafe .nav-links.open { max-height: 400px; }
+    .cafe .nav-links li { width: 100%; }
+    .cafe .nav-links a { display: block; padding: 18px 24px; border-top: 1px solid rgba(245,236,217,.1); }
+  }
+
+  /* ===== Hero ===== */
+  .cafe .hero {
+    min-height: 100vh; max-width: none; padding: 120px 24px 80px;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    background:
+      radial-gradient(ellipse at top, rgba(212,160,86,.25), transparent 60%),
+      linear-gradient(135deg, #2a1a17 0%, #4a2f2a 50%, #6b4a3a 100%);
+    color: var(--cream);
+    position: relative; overflow: hidden;
+  }
+  .cafe .hero-content { position: relative; z-index: 2; max-width: 800px; }
+  .cafe .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    margin-bottom: 20px;
+    color: var(--cream-2);
+    text-shadow: 0 4px 24px rgba(0,0,0,.4);
+  }
+  .cafe .hero h1 span { color: var(--amber); font-style: italic; }
+  .cafe .hero p { font-size: 1.2rem; opacity: .9; margin-bottom: 40px; }
+
+  /* Coffee cup + steam */
+  .cafe .cup-wrap { display: flex; justify-content: center; margin-bottom: 32px; position: relative; height: 120px; }
+  .cafe .cup {
+    width: 90px; height: 70px; background: linear-gradient(180deg, #efe4cf, #d8c8a8);
+    border-radius: 0 0 45px 45px; position: relative;
+    box-shadow: inset -8px -8px 16px rgba(0,0,0,.12), 0 12px 30px rgba(0,0,0,.4);
+    margin-top: 40px;
+  }
+  .cafe .cup::before {
+    content: ''; position: absolute; top: 0; left: 6px; right: 6px; height: 14px;
+    background: #3a2418; border-radius: 50%;
+  }
+  .cafe .cup::after {
+    content: ''; position: absolute; right: -22px; top: 14px; width: 22px; height: 32px;
+    border: 6px solid #d8c8a8; border-left: none; border-radius: 0 22px 22px 0;
+  }
+  .cafe .steam {
+    position: absolute; bottom: 78px; left: 50%; width: 8px; height: 40px;
+    background: rgba(255,255,255,.55); border-radius: 50%; filter: blur(4px);
+    animation: steam 3s ease-in-out infinite;
+  }
+  .cafe .steam:nth-child(1) { transform: translateX(-22px); animation-delay: 0s; }
+  .cafe .steam:nth-child(2) { transform: translateX(-4px); animation-delay: .8s; height: 50px; }
+  .cafe .steam:nth-child(3) { transform: translateX(14px); animation-delay: 1.5s; }
+  @keyframes steam {
+    0%   { opacity: 0; transform: translate(var(--tx, -50%), 0) scale(1); }
+    20%  { opacity: .7; }
+    100% { opacity: 0; transform: translate(calc(var(--tx, -50%) - 10px), -80px) scale(1.6); }
+  }
+
+  /* 3D Order Button */
+  .cafe .btn-3d {
+    display: inline-block; position: relative; cursor: pointer;
+    padding: 18px 48px;
+    font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1.1rem; letter-spacing: 1px; text-transform: uppercase;
+    color: #2a1a17;
+    background: linear-gradient(180deg, #f0c576 0%, var(--amber) 60%, var(--amber-2) 100%);
+    border: none; border-radius: 14px;
+    box-shadow:
+      0 6px 0 var(--amber-2),
+      0 10px 24px rgba(0,0,0,.45),
+      inset 0 2px 0 rgba(255,255,255,.5);
+    transition: transform .12s ease, box-shadow .12s ease;
+    overflow: hidden;
+  }
+  .cafe .btn-3d:hover { transform: translateY(-2px); box-shadow: 0 8px 0 var(--amber-2), 0 14px 30px rgba(0,0,0,.5), inset 0 2px 0 rgba(255,255,255,.5); }
+  .cafe .btn-3d:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--amber-2), 0 4px 10px rgba(0,0,0,.4), inset 0 2px 0 rgba(255,255,255,.4); }
+  .cafe .ripple {
+    position: absolute; border-radius: 50%; background: rgba(255,255,255,.6);
+    transform: scale(0); animation: ripple .7s ease-out; pointer-events: none;
+  }
+  @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+
+  /* ===== About ===== */
+  .cafe .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .cafe .about-img { border-radius: 18px; overflow: hidden; box-shadow: 0 20px 50px rgba(62,39,35,.25); aspect-ratio: 4/3; }
+  .cafe .about-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s; }
+  .cafe .about-img:hover img { transform: scale(1.05); }
+  .cafe .about-text h2 { font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 20px; }
+  .cafe .about-text p { color: var(--brown-2); margin-bottom: 16px; font-size: 1.05rem; }
+  @media (max-width: 768px) { .cafe .about-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+  /* ===== Menu ===== */
+  .cafe .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px; }
+  .cafe .menu-card {
+    background: var(--cream-2); border-radius: 18px; overflow: hidden;
+    box-shadow: 0 8px 24px rgba(62,39,35,.12);
+    transition: transform .4s ease, box-shadow .4s ease;
+    position: relative;
+  }
+  .cafe .menu-card:hover { transform: translateY(-10px); box-shadow: 0 24px 50px rgba(62,39,35,.25); }
+  .cafe .menu-img { aspect-ratio: 4/3; overflow: hidden; }
+  .cafe .menu-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }
+  .cafe .menu-card:hover .menu-img img { transform: scale(1.12); }
+  .cafe .menu-body { padding: 22px; }
+  .cafe .menu-body h3 { font-size: 1.3rem; margin-bottom: 8px; }
+  .cafe .menu-body p { color: var(--brown-2); font-size: .95rem; margin-bottom: 14px; }
+  .cafe .price {
+    display: inline-block; background: var(--brown); color: var(--amber);
+    padding: 6px 16px; border-radius: 999px; font-weight: 600; font-size: .95rem;
+  }
+
+  /* ===== Gallery ===== */
+  .cafe .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .cafe .gallery-item {
+    aspect-ratio: 1; border-radius: 14px; overflow: hidden; position: relative; cursor: pointer;
+    box-shadow: 0 6px 18px rgba(62,39,35,.18);
+  }
+  .cafe .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }
+  .cafe .gallery-item::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(62,39,35,.6));
+    opacity: 0; transition: opacity .3s;
+  }
+  .cafe .gallery-item:hover img { transform: scale(1.15); }
+  .cafe .gallery-item:hover::after { opacity: 1; }
+
+  /* ===== Reviews (Glassmorphism) ===== */
+  .cafe .reviews {
+    background:
+      linear-gradient(135deg, rgba(62,39,35,.85), rgba(93,64,55,.85)),
+      url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1400&q=80') center/cover;
+    max-width: none; padding-left: 0; padding-right: 0;
+  }
+  .cafe .reviews .inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .cafe .reviews .section-title, .cafe .reviews .section-sub { color: var(--cream); }
+  .cafe .reviews .section-sub { opacity: .85; }
+  .cafe .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .cafe .review-card {
+    background: rgba(255,255,255,.12);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,.22);
+    border-radius: 18px; padding: 28px;
+    color: var(--cream); transition: transform .3s;
+    box-shadow: 0 8px 32px rgba(0,0,0,.2);
+  }
+  .cafe .review-card:hover { transform: translateY(-6px); }
+  .cafe .stars { color: var(--amber); font-size: 1.1rem; margin-bottom: 12px; letter-spacing: 2px; }
+  .cafe .review-card p { font-style: italic; opacity: .95; margin-bottom: 18px; }
+  .cafe .review-author { font-weight: 600; color: var(--amber); }
+
+  /* ===== Contact ===== */
+  .cafe .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .cafe .contact-card {
+    background: var(--cream-2); padding: 32px; border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(62,39,35,.12);
+  }
+  .cafe .contact-card h3 { margin-bottom: 18px; font-size: 1.4rem; }
+  .cafe .contact-card p, .cafe .contact-card a { color: var(--brown-2); margin-bottom: 10px; display: block; }
+  .cafe .phone { font-size: 1.4rem; font-weight: 600; color: var(--brown) !important; }
+  .cafe .wa-btn {
+    display: inline-flex !important; align-items: center; gap: 10px;
+    background: var(--whatsapp); color: white !important;
+    padding: 14px 24px; border-radius: 12px; font-weight: 600;
+    margin-top: 12px; transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 6px 18px rgba(37,211,102,.4);
+  }
+  .cafe .wa-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(37,211,102,.5); }
+  .cafe .socials { display: flex; gap: 14px; margin-top: 16px; }
+  .cafe .social-icon {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--brown); color: var(--amber);
+    display: inline-flex !important; align-items: center; justify-content: center;
+    transition: transform .2s, background .2s; margin: 0 !important;
+  }
+  .cafe .social-icon:hover { transform: translateY(-3px) rotate(-6deg); background: var(--amber); color: var(--brown); }
+  .cafe .social-icon svg { width: 20px; height: 20px; }
+  @media (max-width: 768px) { .cafe .contact-grid { grid-template-columns: 1fr; } }
+
+  /* ===== Footer ===== */
+  .cafe .footer {
+    background: #2a1a17; color: var(--cream); padding: 48px 24px 24px; text-align: center;
+  }
+  .cafe .footer .logo { display: block; margin-bottom: 12px; }
+  .cafe .footer p { opacity: .75; font-size: .9rem; margin-bottom: 8px; }
+  .cafe .footer .socials { justify-content: center; margin: 20px 0; }
+  .cafe .footer-divider { border: 0; border-top: 1px solid rgba(245,236,217,.15); margin: 24px auto; max-width: 400px; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="cafe">
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="#home" class="logo">☕ Himalayan Treat Kufri</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <div class="cup-wrap">
+        <div class="steam" style="--tx:-22px"></div>
+        <div class="steam" style="--tx:-4px"></div>
+        <div class="steam" style="--tx:14px"></div>
+        <div class="cup"></div>
+      </div>
+      <h1>Welcome to <span>Himalayan Treat Kufri</span></h1>
+      <p>4.6★ rated on Google by 88+ happy customers — this is a preview of what your online presence could look like.</p>
+      <button class="btn-3d" id="orderBtn">Order Now</button>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-grid">
+      <div class="about-img reveal">
+        <img src="https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=900&q=80" alt="Cozy cafe interior" loading="lazy">
+      </div>
+      <div class="about-text reveal">
+        <h2>Our Story</h2>
+        <p>Himalayan Treat Kufri is a well-loved local favorite, rated 4.6★ by 88+ customers on Google.</p>
+        <p>A dedicated website like this gives customers a reason to trust you and stop by, before they ever walk through the door.</p>
+        <p>Come for the coffee — stay for the feeling.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu">
+    <h2 class="section-title reveal">Our Menu</h2>
+    <p class="section-sub reveal">Crafted with love, served with a smile</p>
+    <div class="menu-grid">
+      <div class="menu-card reveal">
+        <div class="menu-img"><img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=80" alt="Cappuccino" loading="lazy"></div>
+        <div class="menu-body"><h3>Velvet Cappuccino</h3><p>Silky steamed milk over a double shot of our house espresso.</p><span class="price">$4.50</span></div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-img"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80" alt="Latte" loading="lazy"></div>
+        <div class="menu-body"><h3>Caramel Latte</h3><p>Smooth espresso, warm milk, and a swirl of golden caramel.</p><span class="price">$5.25</span></div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-img"><img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&q=80" alt="Pastries" loading="lazy"></div>
+        <div class="menu-body"><h3>Butter Croissant</h3><p>Flaky, golden layers baked fresh every morning.</p><span class="price">$3.75</span></div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-img"><img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=600&q=80" alt="Brunch" loading="lazy"></div>
+        <div class="menu-body"><h3>Avocado Toast</h3><p>Sourdough, smashed avocado, chili flakes, lemon zest.</p><span class="price">$8.50</span></div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-img"><img src="https://images.unsplash.com/photo-1561882468-9110e03e0f78?w=600&q=80" alt="Cake" loading="lazy"></div>
+        <div class="menu-body"><h3>Honey Cake Slice</h3><p>Layered sponge with honey cream and toasted almonds.</p><span class="price">$6.00</span></div>
+      </div>
+      <div class="menu-card reveal">
+        <div class="menu-img"><img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=600&q=80" alt="Cold brew" loading="lazy"></div>
+        <div class="menu-body"><h3>Cold Brew</h3><p>Slow-steeped 18 hours for a smooth, bold finish.</p><span class="price">$4.75</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <h2 class="section-title reveal">Gallery</h2>
+    <p class="section-sub reveal">A peek inside our little corner of the world</p>
+    <div class="gallery-grid">
+      <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=500&q=80" alt="Cafe table" loading="lazy"></div>
+      <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=500&q=80" alt="Coffee art" loading="lazy"></div>
+      <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=500&q=80" alt="Espresso" loading="lazy"></div>
+      <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=500&q=80" alt="Pastry display" loading="lazy"></div>
+      <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=500&q=80" alt="Latte art" loading="lazy"></div>
+      <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1515442261605-65987783cb6a?w=500&q=80" alt="Cafe ambiance" loading="lazy"></div>
+      <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=500&q=80" alt="Beans" loading="lazy"></div>
+      <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1493857671505-72967e2e2760?w=500&q=80" alt="Window seat" loading="lazy"></div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="reviews" id="reviews">
+    <div class="inner">
+      <h2 class="section-title reveal">Loved by Locals</h2>
+      <p class="section-sub reveal">What our regulars are saying</p>
+      <div class="reviews-grid">
+        <div class="review-card reveal">
+          <div class="stars">★★★★★</div>
+          <p>"The coziest spot in town. Their cappuccino is unreal and the staff remember your name on visit two."</p>
+          <div class="review-author">Verified Guest — Google Review</div>
+        </div>
+        <div class="review-card reveal">
+          <div class="stars">★★★★★</div>
+          <p>"I come here every Saturday with my book. It's my little ritual. The honey cake is out of this world."</p>
+          <div class="review-author">Verified Guest — Google Review</div>
+        </div>
+        <div class="review-card reveal">
+          <div class="stars">★★★★★</div>
+          <p>"Warm vibes, incredible coffee, and the avocado toast is the best brunch I've had in years."</p>
+          <div class="review-author">Verified Guest — Google Review</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <h2 class="section-title reveal">Visit Us</h2>
+    <p class="section-sub reveal">We'd love to brew something special for you</p>
+    <div class="contact-grid">
+      <div class="contact-card reveal">
+        <h3>Get in Touch</h3>
+        <p>Call us anytime during opening hours:</p>
+        <a href="tel:08278704535" class="phone">082787 04535</a>
+        <a href="https://wa.me/08278704535" class="wa-btn" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.1 3.2 5.1 4.5 1.8.7 2.5.8 3.4.7.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 0C5.4 0 0 5.4 0 12c0 2.1.5 4.1 1.6 5.9L0 24l6.3-1.6C8 23.5 10 24 12 24c6.6 0 12-5.4 12-12S18.6 0 12 0zm0 22c-1.8 0-3.6-.5-5.1-1.4l-.4-.2-3.7 1 1-3.6-.2-.4C2.5 15.8 2 13.9 2 12 2 6.5 6.5 2 12 2s10 4.5 10 10-4.5 10-10 10z"/></svg>
+          Chat on WhatsApp
+        </a>
+      </div>
+      <div class="contact-card reveal">
+        <h3>Hours &amp; Socials</h3>
+        <p>Monday: Open 24 hours<br>Tuesday: Open 24 hours<br>Wednesday: Open 24 hours<br>Thursday: Open 24 hours<br>Friday: Open 24 hours<br>Saturday: Open 24 hours<br>Sunday: Open 24 hours</p>
+        <p>250mtrs, from IHM, towards, Shimla, Kufri, Himachal Pradesh 171012, India</p>
+        <div class="socials">
+          <a href="#" class="social-icon" aria-label="Instagram" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2-.1-1.2-.1-1.6-.1-4.8s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.2-.1 1.6-.1 4.8-.1M12 0C8.7 0 8.3 0 7.1.1 5.8.1 5 .3 4.2.6c-.8.3-1.5.7-2.2 1.4C1.3 2.7.9 3.4.6 4.2.3 5 .1 5.8.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.1 1.3.3 2.1.6 2.9.3.8.7 1.5 1.4 2.2.7.7 1.4 1.1 2.2 1.4.8.3 1.6.5 2.9.6 1.2.1 1.6.1 4.9.1s3.7 0 4.9-.1c1.3-.1 2.1-.3 2.9-.6.8-.3 1.5-.7 2.2-1.4.7-.7 1.1-1.4 1.4-2.2.3-.8.5-1.6.6-2.9.1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.1-1.3-.3-2.1-.6-2.9-.3-.8-.7-1.5-1.4-2.2C21.3 1.3 20.6.9 19.8.6 19 .3 18.2.1 16.9.1 15.7 0 15.3 0 12 0z"/><path d="M12 5.8c-3.4 0-6.2 2.8-6.2 6.2s2.8 6.2 6.2 6.2 6.2-2.8 6.2-6.2-2.8-6.2-6.2-6.2zm0 10.2c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4z"/><circle cx="18.4" cy="5.6" r="1.4"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="Twitter" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <span class="logo">☕ Himalayan Treat Kufri</span>
+    <p>250mtrs, from IHM, towards, Shimla, Kufri, Himachal Pradesh 171012, India</p>
+    <p>082787 04535</p>
+    <div class="socials">
+      <a href="#" class="social-icon" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2-.1-1.2-.1-1.6-.1-4.8s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.2-.1 1.6-.1 4.8-.1M12 0C8.7 0 8.3 0 7.1.1 5.8.1 5 .3 4.2.6c-.8.3-1.5.7-2.2 1.4C1.3 2.7.9 3.4.6 4.2.3 5 .1 5.8.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.1 1.3.3 2.1.6 2.9.3.8.7 1.5 1.4 2.2.7.7 1.4 1.1 2.2 1.4.8.3 1.6.5 2.9.6 1.2.1 1.6.1 4.9.1s3.7 0 4.9-.1c1.3-.1 2.1-.3 2.9-.6.8-.3 1.5-.7 2.2-1.4.7-.7 1.1-1.4 1.4-2.2.3-.8.5-1.6.6-2.9.1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.1-1.3-.3-2.1-.6-2.9-.3-.8-.7-1.5-1.4-2.2C21.3 1.3 20.6.9 19.8.6 19 .3 18.2.1 16.9.1 15.7 0 15.3 0 12 0z"/><path d="M12 5.8c-3.4 0-6.2 2.8-6.2 6.2s2.8 6.2 6.2 6.2 6.2-2.8 6.2-6.2-2.8-6.2-6.2-6.2zm0 10.2c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4z"/><circle cx="18.4" cy="5.6" r="1.4"/></svg></a>
+      <a href="#" class="social-icon" aria-label="Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a href="https://wa.me/08278704535" class="social-icon" aria-label="WhatsApp" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12c0 2.1.5 4.1 1.6 5.9L0 24l6.3-1.6C8 23.5 10 24 12 24c6.6 0 12-5.4 12-12S18.6 0 12 0zm0 22c-1.8 0-3.6-.5-5.1-1.4l-.4-.2-3.7 1 1-3.6-.2-.4C2.5 15.8 2 13.9 2 12 2 6.5 6.5 2 12 2s10 4.5 10 10-4.5 10-10 10z"/></svg></a>
+    </div>
+    <hr class="footer-divider" />
+    <p>© 2026 Himalayan Treat Kufri. All rights reserved.</p>
+  </footer>
+</div>
+
+<script>
+  // Hamburger toggle
+  const hamburger = document.getElementById("hamburger");
+  const navLinks = document.getElementById("navLinks");
+  hamburger?.addEventListener("click", () => {
+    hamburger.classList.toggle("active");
+    navLinks?.classList.toggle("open");
+  });
+  navLinks?.querySelectorAll("a").forEach((a) => {
+    a.addEventListener("click", () => {
+      hamburger?.classList.remove("active");
+      navLinks?.classList.remove("open");
+    });
+  });
+
+  // Order button ripple + smooth scroll to menu
+  const orderBtn = document.getElementById("orderBtn");
+  orderBtn?.addEventListener("click", (e) => {
+    const rect = orderBtn.getBoundingClientRect();
+    const ripple = document.createElement("span");
+    ripple.className = "ripple";
+    const size = Math.max(rect.width, rect.height);
+    ripple.style.width = ripple.style.height = `${size}px`;
+    ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+    ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+    orderBtn.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 700);
+    const menu = document.getElementById("menu");
+    if (menu) {
+      setTimeout(() => menu.scrollIntoView({ behavior: "smooth", block: "start" }), 180);
+    }
+  });
+
+  // Reveal on scroll
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
+  document.querySelectorAll(".cafe .reveal").forEach((el) => observer.observe(el));
+</script>
+</body>
+</html>
